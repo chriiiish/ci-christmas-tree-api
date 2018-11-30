@@ -7,6 +7,7 @@ Parameters:
   IoTTopic:
     Type: String
     Description: The name of the topic to allow the API to publish to (this should be the same one the Pi is listening)
+    Default: buildmasterchristmastree
 
 Resources:
   IamRole:
@@ -43,8 +44,8 @@ Resources:
         GET:
           Type: Api
           Properties:
-            Path: /createbuild/{buildid}
-            Method: post
+            Path: /createbuild/{buildId}
+            Method: get
       Role: !Ref IamRole
     DependsOn:
       - IamRole
