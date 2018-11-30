@@ -1,7 +1,7 @@
 import boto3
 import json
 
-#/createbuild/{buildId}
+#/build/{buildId}/create
 def create(event, context):
     send(event["pathParameters"]["buildId"], 1)
     return{ "statusCode": 200 }

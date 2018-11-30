@@ -44,7 +44,7 @@ Resources:
         GET:
           Type: Api
           Properties:
-            Path: /createbuild/{buildId}
+            Path: /build/{buildId}/create
             Method: get
       Role: !Ref IamRole
     DependsOn:
