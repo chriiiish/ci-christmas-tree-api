@@ -18,7 +18,8 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
-            Principal: lambda.amazonaws.com
+            Principal: 
+              Service: lambda.amazonaws.com
             Action: sts:AssumeRole
       Policies:
         - PolicyName: ci-api-iot-publish
@@ -46,7 +47,7 @@ Resources:
           Properties:
             Path: /build/{buildId}/create
             Method: get
-      Role: !Ref IamRole
+      Role: !GetAtt IamRole.Arn
     DependsOn:
       - IamRole
 
@@ -65,7 +66,7 @@ Resources:
           Properties:
             Path: /build/{buildId}/succeed
             Method: get
-      Role: !Ref IamRole
+      Role: !GetAtt IamRole.Arn
     DependsOn:
       - IamRole
 
@@ -84,6 +85,6 @@ Resources:
           Properties:
             Path: /build/{buildId}/fail
             Method: get
-      Role: !Ref IamRole
+      Role: !GetAtt IamRole.Arn
     DependsOn:
       - IamRole
