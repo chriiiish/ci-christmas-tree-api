@@ -27,7 +27,7 @@ def reset(event, context):
 """
 Sends a message to a topic
 build_id = The ID of the build
-status = 1 - Create, 2 - Success, 3 - Failure
+status = 0 - Reset, 1 - Create, 2 - Success, 3 - Failure
 topic = name of topic to send to
 """
 def send(build_id, status, topic="buildmasterchristmastree"):
