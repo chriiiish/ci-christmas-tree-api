@@ -68,3 +68,22 @@ Resources:
       Role: !Ref IamRole
     DependsOn:
       - IamRole
+
+  FailBuild:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: 'ci-api-fail-build'
+      Runtime: python3.7
+      CodeUri: app
+      Handler: build.fail
+      Description: Fail Build
+      Timeout: 10
+      Events:
+        GET:
+          Type: Api
+          Properties:
+            Path: /build/{buildId}/fail
+            Method: get
+      Role: !Ref IamRole
+    DependsOn:
+      - IamRole
