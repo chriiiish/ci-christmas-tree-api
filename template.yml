@@ -49,3 +49,22 @@ Resources:
       Role: !Ref IamRole
     DependsOn:
       - IamRole
+
+  SucceedBuild:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: 'ci-api-succeed-build'
+      Runtime: python3.7
+      CodeUri: app
+      Handler: build.succeed
+      Description: Succeed Build
+      Timeout: 10
+      Events:
+        GET:
+          Type: Api
+          Properties:
+            Path: /build/{buildId}/succeed
+            Method: get
+      Role: !Ref IamRole
+    DependsOn:
+      - IamRole

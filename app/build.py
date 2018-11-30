@@ -6,6 +6,11 @@ def create(event, context):
     send(event["pathParameters"]["buildId"], 1)
     return{ "statusCode": 200 }
 
+#/build/{buildId}/succeed
+def succeed(event, context):
+    send(event["pathParameters"]["buildId"], 2)
+    return{ "statusCode": 200 }
+
 """
 Sends a message to a topic
 build_id = The ID of the build
