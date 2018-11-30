@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: A REST API that sends commands to the CI Christmas Tree
+Transform:
+- 'AWS::Serverless-2016-10-31'
+
+Parameters:
+  IoTTopic:
+    Type: String
+    Description: The name of the topic to allow the API to publish to (this should be the same one the Pi is listening)
+
+Resources:
+  IamRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: ci-api-role
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: ci-api-iot-publish
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - iot:Publish
+                Resource:
+                  - !Sub arn:aws:iot:${AWS::Region}:${AWS::AccountId}:topic/${IoTTopic}
+
+  CreateBuild:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: 'ci-api-create-build'
+      Runtime: python3.7
+      CodeUri: app
+      Handler: build.create
+      Description: Create Build
+      Timeout: 10
+      Events:
+        GET:
+          Type: Api
+          Properties:
+            Path: /createbuild/{buildid}
+            Method: post
+      Role: !Ref IamRole
+    DependsOn:
+      - IamRole
