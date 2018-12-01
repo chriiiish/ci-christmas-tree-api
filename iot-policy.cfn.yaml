@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: The Policy that allows IoT devices to talk to a particular topic
+
+Parameters:
+  IoTTopic:
+    Type: String
+    Description: The name of the topic to allow the API to publish to (this should be the same one the Pi is listening)
+    Default: mytree
+
+Resources:
+  IoTPolicy:
+    Type: AWS::IoT::Policy
+    Properties:
+      PolicyName: !Sub PubSubReceive-${IoTTopic}
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - iot:Publish
+              - iot:Subscribe
+              - iot:Receive
+            Resource:
+              - !Sub arn:aws:iot:${AWS::Region}:${AWS::AccountId}:topicfiler/${IoTTopic}
+              - !Sub arn:aws:iot:${AWS::Region}:${AWS::AccountId}:topic/${IoTTopic}
+          - Effect: Allow
+            Action:
+              - iot:Connect
+            Resource: "*"
