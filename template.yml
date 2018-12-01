@@ -103,3 +103,22 @@ Resources:
       Role: !GetAtt IamRole.Arn
     DependsOn:
       - IamRole
+
+  ResetBuild:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: 'ci-api-reset-build'
+      Runtime: python3.7
+      CodeUri: app
+      Handler: build.reset
+      Description: Reset Tree
+      Timeout: 10
+      Events:
+        GET:
+          Type: Api
+          Properties:
+            Path: /reset
+            Method: get
+      Role: !GetAtt IamRole.Arn
+    DependsOn:
+      - IamRole

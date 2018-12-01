@@ -19,7 +19,7 @@ def fail(event, context):
     send(build_id, 3)
     return response("fail", build_id)
 
-# Called by a separate event to reset the state of the tree
+#/reset
 def reset(event, context):
     send("", 0)
     return
