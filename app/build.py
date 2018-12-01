@@ -1,5 +1,6 @@
 import boto3
 import json
+import os
 
 #/build/{buildId}/create
 def create(event, context):
@@ -30,7 +31,8 @@ build_id = The ID of the build
 status = 0 - Reset, 1 - Create, 2 - Success, 3 - Failure
 topic = name of topic to send to
 """
-def send(build_id, status, topic="buildmasterchristmastree"):
+def send(build_id, status):
+    topic = os.environ['topic']
     client = boto3.client("iot-data")
     payload = json.dumps({
         "buildId": build_id,

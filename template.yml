@@ -7,10 +7,7 @@ Parameters:
   IoTTopic:
     Type: String
     Description: The name of the topic to allow the API to publish to (this should be the same one the Pi is listening)
-    Default: buildmasterchristmastree
-  IoTEndpoint:
-    Type: String
-    Description: The Endpoint for Iot Core to publish to
+    Default: mytree
 
 Resources:
   IamRole:
@@ -51,6 +48,9 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       FunctionName: 'ci-api-create-build'
+      Environment:
+        Variables:
+          topic: !Ref IoTTopic
       Runtime: python3.7
       CodeUri: app
       Handler: build.create
@@ -70,6 +70,9 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       FunctionName: 'ci-api-succeed-build'
+      Environment:
+        Variables:
+          topic: !Ref IoTTopic
       Runtime: python3.7
       CodeUri: app
       Handler: build.succeed
@@ -89,6 +92,9 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       FunctionName: 'ci-api-fail-build'
+      Environment:
+        Variables:
+          topic: !Ref IoTTopic
       Runtime: python3.7
       CodeUri: app
       Handler: build.fail
@@ -108,6 +114,9 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       FunctionName: 'ci-api-reset-build'
+      Environment:
+        Variables:
+          topic: !Ref IoTTopic
       Runtime: python3.7
       CodeUri: app
       Handler: build.reset
