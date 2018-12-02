@@ -65,6 +65,28 @@ Resources:
       Role: !GetAtt IamRole.Arn
     DependsOn:
       - IamRole
+    
+  CreateBuildPost:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: 'ci-api-create-build-post'
+      Environment:
+        Variables:
+          topic: !Ref IoTTopic
+      Runtime: python3.7
+      CodeUri: app
+      Handler: build.post_create
+      Description: Create Build
+      Timeout: 10
+      Events:
+        POST:
+          Type: Api
+          Properties:
+            Path: /build/create
+            Method: post
+      Role: !GetAtt IamRole.Arn
+    DependsOn:
+      - IamRole
 
   SucceedBuild:
     Type: 'AWS::Serverless::Function'
@@ -88,6 +110,28 @@ Resources:
     DependsOn:
       - IamRole
 
+  SucceedBuildPost:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: 'ci-api-succeed-build-post'
+      Environment:
+        Variables:
+          topic: !Ref IoTTopic
+      Runtime: python3.7
+      CodeUri: app
+      Handler: build.post_succeed
+      Description: Succeed Build
+      Timeout: 10
+      Events:
+        POST:
+          Type: Api
+          Properties:
+            Path: /build/succeed
+            Method: post
+      Role: !GetAtt IamRole.Arn
+    DependsOn:
+      - IamRole
+
   FailBuild:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -105,6 +149,28 @@ Resources:
           Type: Api
           Properties:
             Path: /build/{buildId}/fail
+            Method: get
+      Role: !GetAtt IamRole.Arn
+    DependsOn:
+      - IamRole
+
+  FailBuildPost:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: 'ci-api-fail-build'
+      Environment:
+        Variables:
+          topic: !Ref IoTTopic
+      Runtime: python3.7
+      CodeUri: app
+      Handler: build.post_fail
+      Description: Fail Build
+      Timeout: 10
+      Events:
+        GET:
+          Type: Api
+          Properties:
+            Path: /build/fail
             Method: get
       Role: !GetAtt IamRole.Arn
     DependsOn:

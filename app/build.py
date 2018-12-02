@@ -20,6 +20,24 @@ def fail(event, context):
     send(build_id, 3)
     return response("fail", build_id)
 
+#/build/create
+def post_create(event, context):
+    build_id = get_param(event['body'], "Execution_Id")
+    send(build_id, 1)
+    return response("create", build_id)
+
+#/build/succeed
+def post_succeed(event, context):
+    build_id = get_param(event['body'], "Execution_Id")
+    send(build_id, 2)
+    return response("succeed", build_id)
+
+#/build/fail
+def post_fail(event, context):
+    build_id = get_param(event['body'], "Execution_Id")
+    send(build_id, 3)
+    return response("fail", build_id)
+
 #/reset
 def reset(event, context):
     send("", 0)
@@ -59,3 +77,19 @@ def response(request_type, build_id, status=200):
         }),
         "statusCode": status
     }
+
+"""
+Gets a parameter from a string formatted like so:
+key=value&key=value
+"""
+def get_param(kvpstring, key):
+    kvps = kvpstring.split("&")
+    keypairs = {}
+    for kvp in kvps:
+        tkey = kvp.split("=")[0]
+        tvalue = kvp.split("=")[1]
+        keypairs[tkey] = tvalue
+    if key in keypairs:
+        return keypairs[key]
+    else:
+        return None
