@@ -41,7 +41,7 @@ def post_fail(event, context):
 #/reset
 def reset(event, context):
     send("", 0)
-    return
+    return response("reset", "")
 
 """
 Sends a message to a topic
@@ -61,7 +61,6 @@ def send(build_id, status):
         qos=1,
         payload=payload
     )
-    return 1
 
 """
 Generate response
