@@ -157,7 +157,7 @@ Resources:
   FailBuildPost:
     Type: 'AWS::Serverless::Function'
     Properties:
-      FunctionName: 'ci-api-fail-build'
+      FunctionName: 'ci-api-fail-build-post'
       Environment:
         Variables:
           topic: !Ref IoTTopic
