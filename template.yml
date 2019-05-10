@@ -171,7 +171,7 @@ Resources:
           Type: Api
           Properties:
             Path: /build/fail
-            Method: get
+            Method: post
       Role: !GetAtt IamRole.Arn
     DependsOn:
       - IamRole
